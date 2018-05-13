@@ -1,0 +1,457 @@
+	== Sequences of audio files played in Rayman 2
+
+Last updated 2018-05-12.
+
+	Notes:
+Brackets are used to define loops: [list_of_files](number_of_loops)
+                                   [...](*) = repeat infinitely
+xx01..xx04 = all the files from xx01 to xx04 (ie. xx01 xx02 xx03 xx04)
+[fileA|fileB|fileC] = random pick between fileA, fileB or fileC
+
+
+	-- Title
+Main menu: [MM01..MM10](*)
+
+
+Intro sequence: Jail10 [silence](*)
+"Ly, the fairy?": JailMus [silence](*)
+Escaping the ship: [Na04..Na11](*)
+
+
+	-- The Woods of Light
+"Globoooox!": Fir01 [[Fir02..Fir04](3) [FO24..31](2) [Fir02..Fir04](2) FO04..FO15](*)
+Murfy: FO02 FO03 [FO04..FO15 Fir01..Fir04 FO24..FO31 Fir01..Fir04](*)
+"Not daddy Globox?": [FO16..23](*)
+Narrow passage + climbing: [FO12..FO15 FO08..FO15 Fir01..Fir04 FO24..FO31](*)
+King of the Teensies: [PS01..PS04](*)
+
+
+	-- The Fairy Glade
+Mushroom area: Ff01..Ff10 Ff03..Ff10 [Ffr01..Ffr08 Ffr01..Ffr12 Ffr09..Ffr12 [Ff03..Ff10](2)](*)
+Piranha: [Ff11..Ff22 Ff11..Ff18 [Ffr09..Ffr12](2) Ffr01..Ffr12](*)
+Door switch on the tree: [[Ff23..Ff34](2) [Ff19..Ff22](2) [Ffr09..Ffr12](2) Ffr01..12 Ffr10..12](*)
+Toxic waste: [[Ff35..Ff38](2) Ff39..Ff46 [Ff19..Ff22](2) [Ff11..Ff14](2) Ffr09..Ffr12 Ffr01..Ffr08](*)
+
+Climbing the tree: [[Ffr01..Ffr04](2) Ff43 Ff44 Ffr05..Ffr12 Ff05..Ff08](*)
+Slide + unreachable cage: [[Ff19..Ff22](2) Ff11..Ff18 Ff11..Ff14 [Ffr09..Ffr12](2)](*)
+
+Cutscene (first 2 seconds): [silence](*)
+Pirate: BA1R01..BA1R08 [BA1R15 [BA1R16](7) BA1R17..BA1R24](*)
+Quiet area on the left: [silence](*)
+Thrown barrels: [BA109..BA116 BA1R15 BA1R16 [BA109..BA112](2) BA113..BA116 BA1R15 BA1R16 BA1R01..BA1R08 BA1R17..BA1R26](*)
+"Use your shadow and your helicopter": [silence](*)
+Secret agent: [BA301..BA306 [BA3R01..BA3R09](2)](*)
+Strafe fight: BA1R01..BA1R24 [BA1R09..BA1R24](*)
+End of fight: [silence](*)
+Sleeping pirate next to the ladder: [Wa2r01..Wa2r16](*)
+Lasers: see (Secret agent)
+Sleeping pirate next to the switch: see (Sleeping pirate next to the ladder)
+End of fight: [silence](*)
+
+Lasers, pt. 2: see (Secret agent)
+
+Destroy the machine: [BA209..BA216](*)
+Ly: [CI01..CI04 CIF](*)
+Purple Lums: [silence](*)
+
+Pipes: Sw01 [Sw02](*)
+Air currents: [[Ffr01..Ffr04](2) Ff43 Ff44 Ffr05..Ffr12 Ff05..Ff08](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+Bonus level access denied/granted: [PS01..PS04](*)
+
+
+	-- The Marshes of Awakening
+Entering the marshes: [SKO00..SKO08](*)
+Surfing with Ssssam: [[Sk08..Sk10](2) [Sk11..Sk14](2)](*)
+Respawn after losing a life: [silence](*)
+
+Surfing with Ssssam, pt. 2: [Sk01..Sk07 [Sk15 Sk16](2)](*)
+Standing on the fragile platform: [silence](*)
+Farewell, Ssssam: [Th03..Th05](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+Bonus level access denied/granted: [PS01..PS04](*)
+(This sequence is played at the end of every level, therefore it is last shown
+here; same for the bonus level, which is only shown once below.)
+
+
+	-- Bonus level
+Cutscene: [silence](*)
+Race: [LY1R05..LY1R12 LY1R05..LY1R08 LY1R09_2 LY1R10_2 LY1R11_2 LY1R12_2](*)
+Race again: [Ly2r01..Ly2r16](*)
+End of race: [silence](*)
+
+
+	-- The Bayou, pt. 1
+Pirate ship cutscene: [BA01..BA04](*)
+Entering the Bayou: SWCI Swc01 SWC02 [SWC03..SWC08](*)
+
+	-- The Walk of Life
+3, 2, 1, Go!: LY101..LY104 [[LY101 LY101_2](2) LY103 LY104](*)
+Bouncy spider webs: LY105..LY112 [[LY1R07 LY1R08](2) LY1R09..LY1R12 [LY1R07 LY1R08](2) LY1R09_2 LY1R10_2 LY1R11_2 LY1R12_2 [LY107 LY108](2) LY109..LY112](*)
+Narrow passage + spider web: see (Bonus level::Race)
+Narrow passage 2 + angled platforms: [LY113..LY116](*)
+Narrow passage 3 + angled platforms 2: see (Narrow passage + spider web)
+End of race: [silence](*)
+Teensie (for 4 seconds): [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+	-- The Bayou, pt. 2
+First cage, after moving platform: [SWC09..SWC12](*)
+Switch + falling platforms: [SWC14..SWC21](*)
+Sleeping pirate under the cage: [silence](*)
+Fight: [Wa2r01..Wa2r16](*)
+After the fight: [silence](*)
+Purple lums + zombie chickens: [Sw03..Sw10](*)
+Bombs on the platforms: SWC29 [SWC13..SWC25 SWC22..SWC29](*)
+
+Piranha: [[CH301..CH304](2) [CH2R01..CH2R04](2)](*)
+A pirate appears: [silence](*)
+Fight #2: BA1R01..BA1R24 [BA1R09..BA1R24](*)
+After the fight #2: [silence](*)
+Barrels around the giant tree: [CH2R01..CH2R04](*)
+Barrels rolling down the short platforms: CH2R05..CH2R08 CH2R17..CH2R20 [CH2R18 CH2R20](*)
+Timer and suspended axes: [[CH305..CH312](2) CH2R01..CH2R20](*)
+The last pipe: [silence](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Sanctuary of Water and Ice
+Teensie council room: [PS01..PS04](*)
+Fighting the pirate: [Wa108..Wa109](*)
+On the bay: WA101..WA103 WA101_2 WA102_2 WA103_2 WA104_2 WA105_2 WA106 WA107 WA1Rns01..WA1Rns04 WA1R04 WA1R05 [WA101..WA103 WA101_2 WA102_2 WA103_2 WA104_2 WA105_2 WA106 WA107 WA1Rns01..WA1Rns08 WA101_2 WA102_2 WA103_2 WA1R01..WA1R03 WA101 WA101_2 WA1R01 WA101 WA1R01 WA101_2 WA1Rns01 WA101 WA101_2 WA101 [WA101_2](6) WA104_2 WA105_2 WA106 WA107 WA1R04 WA1R05 WA104_2 WA105_2 WA106 WA107 WA1Rns01..WA1Rns04 WA1R04 WA1R05](*)
+The two orbs: WA110..WA117 WA110..WA116 WA117_2 [WA110..WA113 WA1R12..WA1R15 WA110..WA115 WA1R08..WA1R15](*)
+
+Murfy: [AS01..AS06](*)
+The attack run: [AS01..AS10](*)
+Aglagl: [He305..He314 HE301_2 He302..He304](*)
+Boss defeated: JINGL7 [silence](*)
+The sanctuary: [WA301 WA301_2 WA302..WA312 [[WA306|WA308|WA312] WA307](2) WA309..WA312 [[WA306|WA308|WA312] WA307](3) WA304..WA306 WA303..WA306 [[WA306|WA308|WA312] WA307](2) [WA309..WA312](2) [[WA306|WA308|WA312] WA307](3)](*)
+The mask: Mask [silence](*)
+
+Polokus: [PO01..PO04](*)
+
+
+	-- The Menhir Hills pt. 1
+Murfy: [silence](*)
+First shell ride: [ROR05..ROR12](*)
+Two pirates sleeping: [Wa2r01..Wa2r16](*)
+Between/after the fights: [silence](*)
+
+Mushroom in the tree: [silence](*)
+Shell ride pt. 2 between the rising tentacles: [RO105..RO108 ROR05..ROR08](*)
+Barrel ride under the slope: [CA201 CA202](*)
+Sleeping pirate in front of the door: [Na401..Na416](*)
+Unlocking the door: [silence](*)
+Clark pt. 1: RO201..RO204 [RO207..RO212 RO207..RO210 RO203 RO204 RO201 RO202 RO207..RO212](*)
+
+	-- The Cave of Bad Dreams
+The Cave pt. 1: VU1R01..VU1R06 [VU1R01_2 VU1R02..VU1R06](*)
+The Cave pt. 2: [VU101..VU112](*)
+Fighting against mini Janos: see (The Cave pt. 1)
+Room with the locked door: [VU109..VU112 [VU1R01_2 VU1R02..VU1R06](2) VU109..VU112 VU101..VU112](*)
+Looking for the orbs: see (The Cave pt. 1)
+
+The calm before the storm: see (The Cave pt. 1)
+Slide + fight against Jano: VU2I [VU202 VU203](*)
+Golden coins!: see (Room with the locked door)
+"I want the treasure!": [silence](*)
+"No treasure for me!" (after the END): see (The Cave pt. 1)
+Back to the marshes: see (The Marshes of Awakening::Entering the marshes)
+
+	-- The Menhir Hills pt. 2
+Clark pt. 1: see (The Menhir Hills pt. 1::Clark pt. 1)
+Clark pt. 2, wueaaagh!: RO205..RO216 [RO201..RO216](*)
+The last cages: [silence](*)
+Last shell ride: [[RO109..RO111 RO110 ROR09..ROR12](2) RO105..RO108 ROR05..ROR12](*)
+
+
+	-- The Canopy
+Portal: [silence](*)
+Spider!: MO101 [MO102..MO121](*)
+Spider web: [[GLRL02](2) GLRL01..GLRL03 GLRL02 GLRL01 [GLRL02](2) GLRL01..GLRL03 GLRL02 GLRL01 [GLRL02](4)](*)
+
+Narrow platforms: see (Spider web)
+Pirate!: BA1R01..BA1R08 [BA1R09..BA1R24](*)
+After the fight: [silence](*)
+"Public enemy no. 2": [GL01..GL06](2) GLR01..GLR08 GLR01 GLR02 GL03 GLR04 GL05 GLR06..GLR08 goto(Spider web)
+Rain dance: [GL09..GL20](2) GL09..GL12 [GL09 GL10](2) goto("Public enemy no. 2")
+Another pirate!: [Wa2r01..Wa2r16](*)
+"Globox not afraid" + silver lum: [silence](*)
+
+Pirate ship appears and drops bombs: [GL37..GL40 GL21 GL22](*)
+Pirate with rocket launcher: [Wh301 Wh302](*)
+After the fight: [silence](*)
+"Just a big nosed bush": [GL23..GL42](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Whale Bay
+Initial area: [silence](*)
+Electric barrel: [Na401..Na416](*)
+Aquarium: Wh201..Wh204 [Wh205..Wh210 Wh209 Wh210](*)
+Pirate on the ship: [Wa201..Wa214](*)
+After the fight: [silence](*)
+Pirate sleeping against palm trees: [Wh301 Wh302](*)
+
+"Carmen the whale is trapped": [silence](*)
+Underwater: see (Aquarium)
+Switch room + walking shell: [silence](*)
+Shell ride: [ROR05..ROR12](*)
+"To breathe, grab my air bubbles": WH101..WH116 [WH117..WH156](*)
+
+Aerophagic piranhas: see ("To breathe, grab my air bubbles")
+Stranded ship: [silence](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Sanctuary of Stone and Fire
+Teensie council room: [PS01..PS04](*)
+Big leap: [Pl101..Pl128](*)
+Pirate!: [BA209..BA216 [BA210 BA212](2) BA209..BA212 BA209..BA216](*)
+After the fight: [BA201..BA208 [BA204 BA201_2 BA202..BA204 BA204..BA208](2)](*)
+Purple lums and golden fist: [PL201..PL208](*)
+Pirate #2: [WH301 WH302](*)
+After the fight #2: [silence](*)
+Plum rides towards the cages: [PL209..PL212](4) [PL201..PL212](*)
+Flies under the spider webs: see (Purple lums and golden fist)
+
+Entering the temple: [PL401..PL406 PL4R01..PL4R06 PL401..PL403 PL4R04 PL4R05 PL405 PL406 [PL4R01..PL4R06](2)](*)
+Icicles: [PL4R01..PL4R06](*)
+Big moving platform on the lava: [[PL407 PL408](4) PL4R01..PL4R04](*)
+Flamethrowers and icicles: see (Icicles)
+Three doors: see (Plum rides towards the cages)
+Sleeping shell: [silence](*)
+Shell ride: ROR09..ROR12 [ROR05..ROR12](*)
+
+Outside the temple: see (Big leap)
+Down the lava river + pirate #3: see (Purple lums and golden fist)
+Sneaky mini Jano: [VU109..VU112 [VU1R01_2 VU1R02..VU1R06](2) VU109..VU112 VU101..VU112](*)
+Blue skies of freedom: [silence](*)
+
+Inside the sanctuary: [PL301..PL312](*)
+The yellow orb: see (Big moving platform on the lava)
+A new path unlocks: [PL501..PL504](*)
+
+Platforms over hot lava: see (Big moving platform on the lava)
+Sliding towards the purple lums: [[Ca1r07_2](2) Ca1r07 Ca1r08](*)
+The blue orb: PL505..PL514 [PL501..PL514](*)
+The mask appears: see (The Sanctuary of Water and Ice::The sanctuary)
+Acquiring the mask: Mask [silence](*)
+
+Polokus: [PO01..PO04](*)
+
+
+	-- The Echoing Caves pt. 1
+Intro cutscene + pirate!: see (The Sanctuary of Stone and Fire::Pirate!) 
+After the fight: see (The Sanctuary of Stone and Fire::After the fight)
+Underwater tunnel: [BA3R09 [BA3R08](3) BA3R05 BA3R06 BA3R08 BA3R01 BA3R02 BA3R09 BA3R08 BA3R07 BA3R08 BA306](*)
+Sleeping pirate next to the switch: [silence](*)
+Pirate fight #2: [WA201..WA214](*)
+After the fight #2: [silence](*)
+Last switches: see (The Sanctuary of Stone and Fire::After the fight)
+
+Inside the caves: [silence](*)
+First barrel ride: [CA101..CA108](*)
+Second barrel ride: CA105..CA108 goto(First barrel ride)
+End of area: [CA109..CA112](4) [CA113 CA114 [Ca1r07_2](2)](2) [CA109..CA112](2) CA113 CA114 CA114F [silence](*)
+
+	-- The Fairy Glade pt. 2
+Back in the Fairy Glade: see (The Fairy Glade::Climbing the tree)
+Pillars in the water: [silence](*)
+Watch out for the barrels!: see (The Fairy Glade::Thrown barrels)
+Sleeping pirate next to the cage: [BA101..BA108 BA1R09..BA1R14 BA1R01..BA1R14](*)
+After the fight: [silence](*)
+
+	-- The Echoing Caves pt. 2
+Deadly liquid: [silence](*)
+Barrel ride #1: CA201..CA204 [CA205 CA206 [[CA201 CA202](2) [CA203](2)](2)](*)
+Pirate next to the closed gate: see (The Echoing Caves pt. 1::End of area)
+Barrel ride #2: CA204..CA206 [CA201..CA206](*)
+Barrel ride #3: [CA201 CA202](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Precipice
+Meanwhile in the prison ship: [BA01..BA04](*)
+Entering the Precipice: [Na28..Na31](*)
+First checkpoint: Na04..Na27 [Na28..Na31](*)
+End of pt. 1: Na32..Na51 [Na04..Na11](*)
+
+Straight line: [Na04..Na11](*)
+Round the collapsing tower: [Na309..Na311 NA312.2](*)
+Pirate!: [Na401..Na416](*)
+After the fight: [silence](*)
+
+Entering area 3: see (Entering the Precipice)
+Area 3: Na32..Na51 [Na28..Na51](*)
+The great descent: [Na301..Na308](*)
+Fragile platforms: see (Round the collapsing tower)
+A safe place: [silence](*)
+Pirate! #2: [WH301..WH306](*)
+After the fight #2: [silence](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Top of the World
+Intro cutscene: [SE153..SE168](*)
+Getting rid of the gorilla pirate: [silence](*)
+Chair ride pt. 1: [SE121..SE128](*)
+Chair ride pt. 2: [SE129..SE136](*)
+Chair ride pt. 3, green lum: SE137..SE144 [SE121..SE144](*)
+Respawning: [SE101..SE116](*)
+
+Fighting the barrel: [[SE2329..SE2332](2) SE2305..SE2320](*)
+Rolling barrels in the narrow passage: [SE2305..SE2320](*)
+End of level: [[SE153..SE168](2) [SE145..SE152](2)](*)
+Teensie cage broken: [PS01..PS04](*)
+
+
+	-- The Walk of Power
+3, 2, 1, Go!: [Ly2r01 Ly2r02](*)
+The Walk of Power: [[LY201..LY206](2) [Ly2r01..Ly2r06](2)](*)
+Water lilies pt. 1: LY207..LY217 [LY201..LY217](*)
+Water lilies pt. 2: [Ly2r01..Ly2r06](*)
+End of race: [silence](*)
+Teensie: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Sanctuary of Rock and Lava
+The Swamp: Sw01 [Sw02](*)
+Pirate with a hook: [Wh301..Wh306](*)
+After the fight: [silence](*)
+Barrels: [Sw03..Sw10](*)
+Sanctuary entrance: [silence](*)
+Pirate #2: [Wa201..Wa214](*)
+After the fight #2: [silence](*)
+
+Entering the sanctuary: EA101..EA103 [EA104..EA122](*)
+Moving platforms: [EA201..EA208](*)
+Pillars in the lava: [EA209..EA212](*)
+
+The lava tower: [EA301..EA304](*)
+The last lums: [EA309..EA320 [EA301..EA304](2)](*)
+"Yeah!": see (The lava tower)
+End portal room: [silence](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- Beneath the Sanctuary of Rock and Lava
+Teensie council room: [PS01..PS04](*)
+Hmmm...: [silence](*)
+A new power: [CI01..CI04 CIF](*)
+Beneath the sanctuary: [[HE01..HE04](2) [HE05](2)](*)
+Lava cascades: HE06 [HE11..HE13](*)
+Angular stone: see (Beneath the sanctuary)
+
+Cascades over a magma river: HE06 [HE07..HE10](*)
+Magma river pt. 2: see (Beneath the sanctuary)
+Last two cages: see (Lava cascades)
+
+"I can't fly anymore!": He305 He306 [He3r05 He3r06](*)
+Foutch: He305 He314 [HE301_2 He302..He314](*)
+Boss defeated: JINGL7 [silence](*)
+Stairway to the mask: see (The Sanctuary of Water and Ice::The sanctuary)
+Acquiring the mask: Mask [silence](*)
+
+Polokus: [PO01..PO04](*)
+
+
+	-- The Tomb of the Ancients
+Meanwhile in the prison ship: [BA01..BA04](*)
+Big staircase: MO001 [MO002..MO005](*)
+Spider attack!: MO101 [MO102..MO121](*)
+Intersection: [silence](*)
+Pirate in the left room: [Wa201..Wa214](*)
+Pirate in the tomb: [Wh301..Wh302](*)
+Raised platforms: see (Big staircase)
+The 1000th lum: [BA209..BA216](*)
+
+Platforms on the deadly water: see (Big staircase)
+Pirate in front of the force field: see (Pirate in the left room)
+Laser!: see (Big staircase)
+Barrel room: [silence](*)
+Barrel ride: [CA201 CA202](*)
+Pirate in front of the exit: [Wa2r01..Wa2r16](*)
+Barrel room 2: see (Big staircase)
+Barrel ride 2: see (The Echoing Caves pt. 2::Barrel ride #1)
+The cage under the wooden platform: [silence](*)
+Pirate #5: see (Pirate in the left room)
+
+Zombie chickens everywhere!: see (Big staircase)
+Spider #2: [MO102..MO121](*)
+Yellow lums and force fields: see (Big staircase)
+Pirate throwing barrels: see (The Fairy Glade::Thrown barrels)
+Calm before the storm: [silence](*)
+Pirate #6: [Wh301..Wh306](*)
+
+Fighting remote-controlled Clark: [BA1R15 BA1R16](4) goto(The Fairy Glade::Strafe fight)
+Remote-controlled box destroyed: JINGL7 [silence](*)
+Teensie cage broken: [PS01..PS04](*)
+Teensie dance: [silence](*)
+
+
+	-- The Iron Mountains
+Teensie council room: [PS01..PS04](*)
+In the rain: see (The Sanctuary of Stone and Fire::After the fight)
+Rotating room: [BA209..BA216](*)
+Grassland: [silence](*)
+Pirates #1, #2: see (The Fairy Glade::Thrown barrels)
+Golden fist: [silence](*)
+Pirate #3: [Wh301..Wh306](*)
+Pirate #4: [Wa2r01..Wa2r16](*)
+Pirate #5 next to the ladder: see (Pirate #3)
+Helicopter down the river: [Na309..Na312](2) [Na301..Na308](*)
+
+In the balloon: MI01..MI05 [Mif_1 [Mif_2](5)](*)
+Giant chicken: see (The Fairy Glade::Climbing the tree)
+Sliding into the building: [silence](*)
+Inside the building: see (The Top of the World::End of level)
+Sliding towards the sleeping shell: [silence](*)
+Shell ride: see (The Menhir Hills pt. 2::Last shell ride)
+
+Last lums + Uglette: [Mif_1 [Mif_2](5)](*)
+Rescued Globox babies: see (In the balloon)
+Mask obtained: Mask [silence](*)
+
+Polokus: [PO01..PO04](*)
+
+
+	-- The Prison Ship
+Introducing the Grolgoth: [BA01..BA04](*)
+The slide: [BO01 BO02 [BO03 BO04](3)](*)
+Switches: [BO05..BO09 Bof10 BO05 BO06 [BO07 BO08](5) BO09 Bof10](*)
+
+Shell generator disabled: [silence](*)
+Pirate with flamethrower: [He301..He314](*)
+The flying shell: [AS01..AS06](*)
+
+The flying shell pt. 2: AS07..AS10 [AS01..AS10](*)
+
+
+	-- The Crow's Nest
+"Let's see how well you swim in molten lava": [BA01..BA04](*)
+Fighting the Grolgoth: [RH01..RH12 [RH07 RH08](2) RH09..RH12 [RH01..RH04 [RH09|RH12]](3) RH01..RH06 [RH07 RH08](2) RH09..RH12](*)
+Ly sends help: [CI01..CI04 CIF](*)
+The final fight: AS07 [RH01..RH12 RH01..RH04 He307..He314 He301..He314 RH05..RH08](*)
+One last surprise: JINGL7 silence [Th06 Th07](*)
+
+The mourning: EN101..EN105 EN1F [silence](*)
+Rayman appears: EN200..EN204 EN2F [silence](*)
+
+End credits: Th01..Th07 Na12..Na51 [Na04..Na51](*)
+
+
+	-- Miscellaneous
+Game over: JINGLE8 [silence](*)
+Try again: new01 [silence](*)

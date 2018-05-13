@@ -1,0 +1,107 @@
+	An unofficial APM format description
+	(Rayman 2 music files)
+	[last edit: 2018-05-13]
+
+
+Introductory note: this description was put together by Palorifgrodbierzrt
+(aka. Synthesis), with some help from imaginaryPineapple
+(https://github.com/imaginaryPineapple/OpenRayman).
+This is our current knowledge about the format, so keep in mind that there are
+still a few elements missing, or some things that are incorrect.
+
+
+A Rayman 2 .apm file is comprised of a WAVEFORMATEX chunk, followed by a 80-byte
+ADPCM header, containing the initial values for the ADPCM state machine, and
+finally the actual ADPCM data:
+
+
+-------|---------|--------|----------------------------------------------------
+Offset | Size    | Type   | Information
+-------|---------|--------|----------------------------------------------------
+0x0    | 2       | short  | Format tag (0x0020 for Ubisoft ADPCM)
+0x2    | 2       | short  | Channel count
+0x4    | 4       | int    | Sample rate
+0x8    | 4       | int    | Byte rate, as if it were uncompressed 16-bit PCM
+0xC    | 2       | short  | Block alignment (usually = 1)
+0xE    | 2       | short  | Bits per sample
+-------|---------|--------|----------------------------------------------------
+0x10   | 4       | int    | Size of the next APM description chunk (including
+       |         |        | this value); should be 0x50 (80 in decimal)
+0x14   | 4       | char*4 | Signature/version number? (default value is "vs12")
+0x18   | 4       | int    | Total file size, in bytes
+0x1C   | 4       | int    | Audio data length, in nibbles
+0x20   | 4       | int    | ?? (four consecutive 0xFF bytes)
+0x24   | 4       | int    | ?? (four consecutive null bytes)
+0x28   | 4       | int    | Parity flag (*real-time placeholder, see below)
+0x2C   | 12*chan | -      | For each channel, last to first:
+       |         |        |     (eg. stereo files stores right channel first)
+       |   4     | int    | Initial PCM value (with 16-bit sign extension)
+       |   4     | int    | Initial ADPCM step index
+       |   4     | byte*4 | Beginning of the ADPCM data (wtf?) (**see below)
+0x38   |         |        | and so on...
+...    | ?       | -      | Null bytes for padding
+-------|---------|--------|----------------------------------------------------
+0x60   | 4       | char*4 | Data chunk header ("DATA")
+0x64   | ?       | char*? | ADPCM audio data
+-------|---------|--------|----------------------------------------------------
+
+
+The ADPCM audio data is stored as follows: the channels are interleaved, and
+since each sample takes only 4 bytes, they are stored in pairs. For example,
+the beginning of a stereo file would look like
+    0xAB 0xCD 0xEF 0xGH ...
+A: left channel, 1st ADPCM sample
+B: left channel, 2nd sample
+C: right channel, 1st sample
+D: right channel, 2nd sample
+E: left channel, 3rd sample
+F: left channel, 4th sample
+G: right channel, 3rd sample
+H: right channel, 4th sample, and so on.
+
+If the total number of sample is odd, then for each channel, the last byte will
+be filled halfway. The least significant bits are left to 0. For example, the
+end of a stereo file would look like
+    ... 0xY0 0xZ0
+with Y and Z being the last samples of respectively the left and right
+channels.
+
+
+The audio format itself should be IMA-ADPCM (see
+http://www.cs.columbia.edu/~hgs/audio/dvi/ and
+https://wiki.multimedia.cx/index.php/IMA_ADPCM for more information). However
+the game actually decodes it in a slightly different way: the least significant
+3 bits of the "step" value are cleared at the beginning of each iteration.
+
+
+(*) At address 0x28, there's a 4-bit reserved value which should be equal to 0.
+This is because the header is copied in memory while the game runs, and some
+areas of the header are actually manipulated (but the file itself is untouched).
+This particular value is a placeholder for a parity flag: since ADPCM is 4-bit,
+there are two samples per byte; this value is used in the game's code to
+indicate whether it is currently processing the odd (most significant) or even
+(least significant) nibble.
+
+
+(**) For some reason, the beginning of the ADPCM chunk is stored in the header
+in an unusual way: the 4-byte value corresponds to the first four bytes of the
+(multi-channel interleaved) ADPCM data, starting from the byte corresponding to
+the channel. Say we have a stereo file. In the header appears the following
+sequence:
+-------|---------|--------|----------------------------------------------------
+Offset | Size    | Type   | Information
+-------|---------|--------|----------------------------------------------------
+       |         |        | ...
+0x2C   | 4       | int    | Initial PCM value for right channel
+0x30   | 4       | int    | Initial ADPCM step index for right channel
+0x34   | 4       | byte*4 | Bytes 2 through 5 of the ADPCM data chunk    <---
+0x38   | 4       | int    | Initial PCM value for left channel
+0x3C   | 4       | int    | Initial ADPCM step index for left channel
+0x40   | 4       | byte*4 | First four bytes of ADPCM data               <---
+0x44   | 28      | -      | Null bytes for padding
+       |         |        | ...
+-------|---------|--------|----------------------------------------------------
+
+Note: there are 52 bytes available for storing the initial ADPCM variables,
+which means that the APM format could support up to 4 channels, leaving 4 null
+padding bytes.
