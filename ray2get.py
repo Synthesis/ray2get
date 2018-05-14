@@ -3,7 +3,7 @@
 """
 	Ray2Get 2.0
 	by Palorifgrodbierzrt 2018
-	[ver. 2018-05-13]
+	[ver. 2018-05-14]
 
 
 Ten years later (or maybe ten years too late?), I'm back!
@@ -48,7 +48,8 @@ OpenRayman project) for the complementary info about the APM file format.
 """
 
 
-import re, struct, sys
+from __future__ import print_function
+import os.path, re, struct, sys
 
 
 # -----------------------------------------------------------------------------
@@ -66,7 +67,7 @@ def toList(value, bytes=4, little_endian=True):
 	"""
 	v = value
 	l = []
-	for b in xrange(bytes):
+	for b in range(bytes):
 		l.append((v & 255))
 		v = v >> 8
 	if little_endian == False:
@@ -189,7 +190,7 @@ def read_sample_16(file_handler, bytes_per_sample):
 	elif bytes_per_sample == 2:
 		return struct.unpack('h', data[:2])[0]
 	elif bytes_per_sample == 3:
-		return (struct.unpack('i', '\x00' + data[:3])[0] >> 8)
+		return (struct.unpack('i', b'\x00' + data[:3])[0] >> 8)
 	elif bytes_per_sample == 4:
 		return (struct.unpack('i', data[:4])[0] >> 16)
 
@@ -205,51 +206,51 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 		ima_adpcm: if True, standard IMA-ADPCM encoding is applied;
 		           if False, do the custom variant with modified step variable
 	"""
-	if wav_filename == apm_filename:
-		print 'Error: input and output files share the same name.'
-		return 1
 
 	# Open WAV file
 	pcm = open(wav_filename, 'rb')
 
 	# Check format
-	if pcm.read(4) != 'RIFF':
-		print 'Error: input file is not a RIFF file.'
+	if pcm.read(4) != b'RIFF':
+		print('Error: input file is not a RIFF file.', file=sys.stderr)
 		pcm.close()
 		return 2
 	pcm.seek(4, 1)
-	if pcm.read(4) != 'WAVE':
-		print 'Error: input file is not a WAVE file.'
+	if pcm.read(4) != b'WAVE':
+		print('Error: input file is not a WAVE file.', file=sys.stderr)
 		pcm.close()
 		return 2
 
 	# Locate format subchunk
 	chunkHeader = pcm.read(4)
-	while chunkHeader and chunkHeader != 'fmt ':
+	while chunkHeader and chunkHeader != b'fmt ':
 		chunkSize = struct.unpack('I', pcm.read(4))[0]
 		pcm.seek(chunkSize, 1)
 		chunkHeader = pcm.read(4)
 	if not chunkHeader:
-		print 'Error: could not find format chunk in wave file.'
+		print('Error: could not find format chunk in wave file.',
+				file=sys.stderr)
 		pcm.close()
 		return 3
 	pcm.seek(4, 1)
 	audio_format, channel_count, sample_rate = \
 			struct.unpack('HHI', pcm.read(8))[0:3]
 	if audio_format != 1:
-		print 'Error: unsupported audio format ('+str(hex(audio_format))+').'
+		print('Error: unsupported audio format ('+str(hex(audio_format))+').',
+				file=sys.stderr)
 		pcm.close()
 		return 4
 	if channel_count < 1 or channel_count > 2:
-		print 'Error: this file has ' + str(channel_count) \
-				+ ' channels (only mono and stereo are supported).'
+		print('Error: this file has ' + str(channel_count) \
+				+ ' channels (only mono and stereo are supported).',
+				file=sys.stderr)
 		pcm.close()
 		return 4
 	pcm.seek(6, 1)
 	bits_per_sample = struct.unpack('H', pcm.read(2))[0]
 	if bits_per_sample not in [8, 16, 24, 32]:
-		print 'Unsupported bit depth (' + str(bits_per_sample) \
-				+ '); only 8, 16, 24 and 32 are supported.'
+		print('Unsupported bit depth (' + str(bits_per_sample) \
+				+ '); only 8, 16, 24 and 32 are supported.', file=sys.stderr)
 		pcm.close()
 		return 4
 	bytes_per_sample = bits_per_sample >> 3
@@ -257,32 +258,32 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 	# Locate data subchunk
 	pcm.seek(12, 0)
 	chunkHeader = pcm.read(4)
-	while chunkHeader and chunkHeader != 'data':
+	while chunkHeader and chunkHeader != b'data':
 		chunkSize = struct.unpack('I', pcm.read(4))[0]
 		pcm.seek(chunkSize, 1)
 		chunkHeader = pcm.read(4)
 	if not chunkHeader:
-		print 'Error: could not find data chunk in wave file.'
+		print('Error: could not find data chunk in wave file.', file=sys.stderr)
 		pcm.close()
 		return 3
 	data_length = struct.unpack('I', pcm.read(4))[0]
-	data_length = (data_length / (bytes_per_sample * channel_count)) - 1
+	data_length = (data_length // (bytes_per_sample * channel_count)) - 1
 
 	# Preinitialized variables
-	predictor = [0 for c in xrange(channel_count)]
-	step_index = [0 for c in xrange(channel_count)]
-	sample = [0 for c in xrange(channel_count)]
+	predictor = [0 for c in range(channel_count)]
+	step_index = [0 for c in range(channel_count)]
+	sample = [0 for c in range(channel_count)]
 	adpcm_data = [] # will contain the following:
 	# [initial_predictor, initial_step] * channel_count + [nibbles12,
 	# nibbles34, nibbles56, ...]
 
 	# Read the first two PCM samples for each channel
-	init_sample = [0 for i in xrange(channel_count * 2)]
-	for i in xrange(2):
-		for c in xrange(channel_count):
+	init_sample = [0 for i in range(channel_count * 2)]
+	for i in range(2):
+		for c in range(channel_count):
 			init_sample[(c * 2) + i] = read_sample_16(pcm, bytes_per_sample)
 	# Initialize ADPCM encoder
-	for c in xrange(channel_count):
+	for c in range(channel_count):
 		predictor[c], step_index[c] = \
 				encode_init(init_sample[c * 2], init_sample[(c * 2) + 1])
 		adpcm_data.extend([predictor[c], step_index[c]])
@@ -290,22 +291,22 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 
 	# Start encoding
 	remaining_samples = data_length
-	nibble = [0 for i in xrange(channel_count * 2)]
+	nibble = [0 for i in range(channel_count * 2)]
 	while remaining_samples > 0:
-		for n in xrange(2): # Two nibbles per byte
+		for n in range(2): # Two nibbles per byte
 			if not (remaining_samples == 0 and n == 1):
-				for c in xrange(channel_count):
+				for c in range(channel_count):
 					sample[c] = read_sample_16(pcm, bytes_per_sample)
 					nibble[c * 2 + n], predictor[c], step_index[c] = \
 							encode(sample[c], predictor[c], step_index[c], \
 									ima_adpcm)
 			else:
 				# If the data length is odd, the last nibble is set to null
-				for c in xrange(channel_count):
+				for c in range(channel_count):
 					nibble[c * 2 + n] = 0
 			remaining_samples -= 1
 
-		for c in xrange(channel_count):
+		for c in range(channel_count):
 			adpcm_data.append(((nibble[c*2] & 15) << 4) + (nibble[c*2+1] & 15))
 
 	# End of encoding, close file
@@ -313,10 +314,10 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 
 	# Add padding bytes if adpcm_data is less than 4 bytes long, otherwise the
 	# header would be screwed up
-	minimum_data_length = adpcm_data[channel_count*3-1:channel_count*3+3]
+	minimum_data_length = len(adpcm_data[channel_count*3-1:channel_count*3+3])
 	too_short_padding_length = 0
 	if minimum_data_length < 4:
-		adpcm_data.extend([0 for i in xrange(minimum_data_length, 4)])
+		adpcm_data.extend([0 for i in range(minimum_data_length, 4)])
 		too_short_padding_length = (4 - minimum_data_length)
 
 	# Create and open APM file
@@ -331,22 +332,22 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 			# (note: byte rate is stored as if the file was uncompressed PCM16)
 	adp.write(bytearray([1, 0, 4, 0, 0x50, 0, 0, 0]))
 			# Block align (2), Bit rate (2), APM chunk size (4)
-	adp.write(bytearray('vs12')) # Ubisoft ADPCM version identifier (4)
+	adp.write(bytearray(b'vs12')) # Ubisoft ADPCM version identifier (4)
 	file_length = ((data_length+1 if data_length & 1 else data_length) >> 1) \
 			* channel_count + 100 + too_short_padding_length
 	adp.write(bytearray(toList(file_length))) # Total file length in bytes (4)
 	adp.write(bytearray(toList(data_length))) # Sample count (4)
 	adp.write(bytearray([0xff, 0xff, 0xff, 0xff])) # Unknown (4)
 	adp.write(bytearray(toList(0, 8))) # Unknown (4), Parity flag (4)
-	for c in reversed(xrange(channel_count)):
+	for c in reversed(range(channel_count)):
 		adp.write(bytearray(toList(adpcm_data[c*2]))) # Initial PCM value (4)
 		adp.write(bytearray(toList(adpcm_data[c*2+1]))) # Initial step index (4)
 		adp.write(bytearray(adpcm_data[channel_count*2+c:channel_count*2+c+4]))
 				# Audio data start (4)
-	adp.write(bytearray([0 for i in xrange(52 - channel_count*12)])) # Padding
+	adp.write(bytearray([0 for i in range(52 - channel_count*12)])) # Padding
 
 	# Data section
-	adp.write(bytearray("DATA")) # Data chunk header
+	adp.write(bytearray(b'DATA')) # Data chunk header
 	adp.write(bytearray(adpcm_data[channel_count*2:])) # ADPCM data (skipping
 	                                                   # the initial values
 
@@ -414,15 +415,30 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 	# File buffers
 	adp = open(apm_filename, 'rb')
 
+	# Check format
+	adp.seek(0x14, 0) # (0 == SEEK_SET)
+	if adp.read(4) != b'vs12':
+		print('Error: invalid file format (couldn\'t find .apm identifier).',
+				file=sys.stderr)
+		adp.close()
+		return 2
+	adp.seek(0, 0)
+
 	# Read audio information
 	format_tag, channel_count, sample_rate = \
 			struct.unpack('HHI', adp.read(8))[0:3]
-	if channel_count < 1 or channel_count > 2:
-		print 'Error: this file has ' + str(channel_count) \
-				+ ' channels (only mono and stereo are supported).'
+	if format_tag != 0x20:
+		print('Error: input file is not Ubisoft ADPCM (format tag = ' + hex(format_tag)
+				+ ', should be 0x20).', file=sys.stderr)
 		adp.close()
 		return 2
-	adp.seek(0x1C, 0) # (0 == SEEK_SET)
+	if channel_count < 1 or channel_count > 2:
+		print('Error: this file has ' + str(channel_count) \
+				+ ' channels (only mono and stereo are supported).',
+				file=sys.stderr)
+		adp.close()
+		return 4
+	adp.seek(0x1C, 0)
 	data_length = struct.unpack('I', adp.read(4))[0]
 	if preserve_first:
 		data_length += 1
@@ -431,10 +447,10 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 
 	# Wave file rendering...
 	# RIFF chunk
-	pcm.write(bytearray('RIFF'))
+	pcm.write(bytearray(b'RIFF'))
 	pcm.write(bytearray(toList((data_length * channel_count * 2) + 36)))
 	# Format subchunk
-	pcm.write(bytearray('WAVEfmt '))
+	pcm.write(bytearray(b'WAVEfmt '))
 	pcm.write(bytearray([16, 0, 0, 0, 1, 0])) # Subchunk size (4), PCM (2)
 	pcm.write(bytearray(toList(channel_count, 2))) # Channel count (2)
 	pcm.write(bytearray(toList(sample_rate))) # Sample rate (4)
@@ -442,26 +458,26 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 	pcm.write(bytearray(toList((channel_count * 2), 2))) # Block align (2)
 	pcm.write(bytearray([16, 0])) # Bits per sample (2)
 	# Data subchunk
-	pcm.write(bytearray('data'))
+	pcm.write(bytearray(b'data'))
 	pcm.write(bytearray(toList(data_length * channel_count * 2)))
 
 	# Preinitialized ADPCM variables
-	nibble = [0 for c in xrange(channel_count)] # The data to decode
-	predictor = [0 for c in xrange(channel_count)] # The PCM16 data
-	step_index = [0 for c in xrange(channel_count)]
-	step = [0 for c in xrange(channel_count)]
+	nibble = [0 for c in range(channel_count)] # The data to decode
+	predictor = [0 for c in range(channel_count)] # The PCM16 data
+	step_index = [0 for c in range(channel_count)]
+	step = [0 for c in range(channel_count)]
 
 	# Read the initial values
 	# (predictor and step index for both channels)
 	adp.seek(0x2C, 0)
-	for c in reversed(xrange(channel_count)):
+	for c in reversed(range(channel_count)):
 		predictor[c], step_index[c] = struct.unpack('iI', adp.read(8))[0:2]
 		adp.seek(4, 1) # (1 == SEEK_CUR)
 		# Initializing steps for predictors
 		step[c] = step_table[step_index[c]]
 
 	if preserve_first:
-		for c in xrange(channel_count):
+		for c in range(channel_count):
 			pcm.write(bytearray(toList(predictor[c],2)))
 
 	# Seek for DATA chunk in apm file
@@ -471,16 +487,16 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 	remaining_samples = (data_length - 1) if preserve_first else data_length
 	adp_data = adp.read(channel_count)
 	while remaining_samples > 0:
-		for c in xrange(channel_count):
+		for c in range(channel_count):
 			# Read one byte of data per channel
-			nibble[c] = struct.unpack('B', adp_data[c])[0]
+			nibble[c] = struct.unpack('B', adp_data[c:c+1])[0]
 
-		for n in reversed(xrange(2)):
+		for n in reversed(range(2)):
 			# There are two nibbles per byte ; if the total number of samples
 			# in the file is odd, we don't process the last one (which is
 			# usually null).
 			if not (remaining_samples == 1 and n == 0):
-				for c in xrange(channel_count):
+				for c in range(channel_count):
 					# Decoding
 					predictor[c], step_index[c], step[c] = \
 							decode(nibble[c] >> (n << 2), step_index[c], \
@@ -507,25 +523,29 @@ def main():
 	# Check the command syntax
 	err_arg = False
 	if len(sys.argv) < 3:
-		print 'Not enough arguments provided.'
+		print('Not enough arguments provided.', file=sys.stderr)
 		err_arg = True
 	elif sys.argv[1].lower()[0] not in ['e', 'd']:
-		print 'Unknown action parameter (should be e[i] or d[i1]).'
+		print('Unknown action parameter (should be e[i] or d[i1]).',
+			file=sys.stderr)
 		err_arg = True
 	if err_arg:
-		print 'Usage:'
-		print '\tEncoding (finetuned for the game):'
-		print '\t\tpython ' + sys.argv[0] + ' e file.wav [file.apm]'
-		print '\tEncoding (using standard IMA-ADPCM algorithm):'
-		print '\t\tpython ' + sys.argv[0] + ' ei file.wav [file.apm]'
-		print '\tDecoding (as done in the game):'
-		print '\t\tpython ' + sys.argv[0] + ' d file.apm [file.wav]'
-		print '\tDecoding (using standard IMA-ADPCM algorithm):'
-		print '\t\tpython ' + sys.argv[0] + ' di file.apm [file.wav]'
-		print '\tDecoding (keep first PCM sample in output file):'
-		print '\t\tpython ' + sys.argv[0] + ' d1 file.apm [file.wav]'
+		print('Usage:')
+		print('\tEncoding (finetuned for the game):')
+		print('\t\tpython ' + sys.argv[0] + ' e file.wav [file.apm]')
+		print('\tEncoding (using standard IMA-ADPCM algorithm):')
+		print('\t\tpython ' + sys.argv[0] + ' ei file.wav [file.apm]')
+		print('\tDecoding (as done in the game):')
+		print('\t\tpython ' + sys.argv[0] + ' d file.apm [file.wav]')
+		print('\tDecoding (using standard IMA-ADPCM algorithm):')
+		print('\t\tpython ' + sys.argv[0] + ' di file.apm [file.wav]')
+		print('\tDecoding (keep first PCM sample in output file):')
+		print('\t\tpython ' + sys.argv[0] + ' d1 file.apm [file.wav]')
 		return 1
 
+	if not os.path.isfile(sys.argv[2]):
+		print('Error: input file does not exist.', file=sys.stderr)
+		return 1
 
 	# Generate output file name if not provided
 	if len(sys.argv) >= 4:
@@ -533,8 +553,12 @@ def main():
 	else:
 		# Give the input file's name to the output file
 		output_filename = re.sub('\.[^.]*$', '', sys.argv[2])
-		output_filename += '.apm' if sys.argv[1].lower() == 'e' else '.wav'
+		output_filename += '.apm' if sys.argv[1].lower()[0] == 'e' else '.wav'
 
+	if sys.argv[2] == output_filename:
+		print('Error: input and output files share the same name.',
+				file=sys.stderr)
+		return 1
 
 	# Convert the file
 	if sys.argv[1].lower()[0] == 'e':

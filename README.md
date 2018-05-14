@@ -29,7 +29,7 @@ As a workaround, this script provides a variant of the encoding algorithm that c
 
 ## Requirements
 
-The script requires a Python 2.x environment installed on your machine (it was only tested in Python 2.7, and might not work with previous versions).
+The script requires a Python 2.x/3.x environment installed on your machine (it was tested with versions 2.7, 3.2 and 3.4).
 
 
 ## Usage
