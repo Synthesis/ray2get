@@ -3,7 +3,7 @@
 """
 	Ray2Get 2.0
 	by Palorifgrodbierzrt 2018
-	[ver. 2018-05-14]
+	[ver. 2018-09-04]
 
 
 Ten years later (or maybe ten years too late?), I'm back!
@@ -186,13 +186,13 @@ def read_sample_16(file_handler, bytes_per_sample):
 		return 0
 
 	if bytes_per_sample == 1:
-		return (struct.unpack('B', data[:1])[0] << 8)
+		return (struct.unpack('<B', data[:1])[0] << 8)
 	elif bytes_per_sample == 2:
-		return struct.unpack('h', data[:2])[0]
+		return struct.unpack('<h', data[:2])[0]
 	elif bytes_per_sample == 3:
-		return (struct.unpack('i', b'\x00' + data[:3])[0] >> 8)
+		return (struct.unpack('<i', b'\x00' + data[:3])[0] >> 8)
 	elif bytes_per_sample == 4:
-		return (struct.unpack('i', data[:4])[0] >> 16)
+		return (struct.unpack('<i', data[:4])[0] >> 16)
 
 	return 0
 
@@ -224,7 +224,7 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 	# Locate format subchunk
 	chunkHeader = pcm.read(4)
 	while chunkHeader and chunkHeader != b'fmt ':
-		chunkSize = struct.unpack('I', pcm.read(4))[0]
+		chunkSize = struct.unpack('<I', pcm.read(4))[0]
 		pcm.seek(chunkSize, 1)
 		chunkHeader = pcm.read(4)
 	if not chunkHeader:
@@ -234,7 +234,7 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 		return 3
 	pcm.seek(4, 1)
 	audio_format, channel_count, sample_rate = \
-			struct.unpack('HHI', pcm.read(8))[0:3]
+			struct.unpack('<HHI', pcm.read(8))[0:3]
 	if audio_format != 1:
 		print('Error: unsupported audio format ('+str(hex(audio_format))+').',
 				file=sys.stderr)
@@ -247,7 +247,7 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 		pcm.close()
 		return 4
 	pcm.seek(6, 1)
-	bits_per_sample = struct.unpack('H', pcm.read(2))[0]
+	bits_per_sample = struct.unpack('<H', pcm.read(2))[0]
 	if bits_per_sample not in [8, 16, 24, 32]:
 		print('Unsupported bit depth (' + str(bits_per_sample) \
 				+ '); only 8, 16, 24 and 32 are supported.', file=sys.stderr)
@@ -259,14 +259,14 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 	pcm.seek(12, 0)
 	chunkHeader = pcm.read(4)
 	while chunkHeader and chunkHeader != b'data':
-		chunkSize = struct.unpack('I', pcm.read(4))[0]
+		chunkSize = struct.unpack('<I', pcm.read(4))[0]
 		pcm.seek(chunkSize, 1)
 		chunkHeader = pcm.read(4)
 	if not chunkHeader:
 		print('Error: could not find data chunk in wave file.', file=sys.stderr)
 		pcm.close()
 		return 3
-	data_length = struct.unpack('I', pcm.read(4))[0]
+	data_length = struct.unpack('<I', pcm.read(4))[0]
 	data_length = (data_length // (bytes_per_sample * channel_count)) - 1
 
 	# Preinitialized variables
@@ -325,7 +325,7 @@ def encode_file(wav_filename, apm_filename, ima_adpcm=False):
 
 	# APM file rendering...
 	# Header
-	adp.write(bytearray([0x20, 0])) # Format tag (2)
+	adp.write(bytearray([0, 0x20])) # Format tag (2)
 	adp.write(bytearray(toList(channel_count, 2))) # Channel count (2)
 	adp.write(bytearray(toList(sample_rate))) # Sample rate (4)
 	adp.write(bytearray(toList(sample_rate*channel_count*2))) # Byte rate (4)
@@ -426,10 +426,10 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 
 	# Read audio information
 	format_tag, channel_count, sample_rate = \
-			struct.unpack('HHI', adp.read(8))[0:3]
-	if format_tag != 0x20:
+			struct.unpack('<HHI', adp.read(8))[0:3]
+	if format_tag != 0x2000:
 		print('Error: input file is not Ubisoft ADPCM (format tag = ' + hex(format_tag)
-				+ ', should be 0x20).', file=sys.stderr)
+				+ ', should be 0x2000).', file=sys.stderr)
 		adp.close()
 		return 2
 	if channel_count < 1 or channel_count > 2:
@@ -439,7 +439,7 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 		adp.close()
 		return 4
 	adp.seek(0x1C, 0)
-	data_length = struct.unpack('I', adp.read(4))[0]
+	data_length = struct.unpack('<I', adp.read(4))[0]
 	if preserve_first:
 		data_length += 1
 
@@ -471,7 +471,7 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 	# (predictor and step index for both channels)
 	adp.seek(0x2C, 0)
 	for c in reversed(range(channel_count)):
-		predictor[c], step_index[c] = struct.unpack('iI', adp.read(8))[0:2]
+		predictor[c], step_index[c] = struct.unpack('<iI', adp.read(8))[0:2]
 		adp.seek(4, 1) # (1 == SEEK_CUR)
 		# Initializing steps for predictors
 		step[c] = step_table[step_index[c]]
@@ -489,7 +489,7 @@ def decode_file(apm_filename, wav_filename, ima_adpcm=False, \
 	while remaining_samples > 0:
 		for c in range(channel_count):
 			# Read one byte of data per channel
-			nibble[c] = struct.unpack('B', adp_data[c:c+1])[0]
+			nibble[c] = struct.unpack('<B', adp_data[c:c+1])[0]
 
 		for n in reversed(range(2)):
 			# There are two nibbles per byte ; if the total number of samples

@@ -1,6 +1,6 @@
 	An unofficial APM format description
 	(Rayman 2 music files)
-	[last edit: 2018-05-13]
+	[last edit: 2018-09-04]
 
 
 Introductory note: this description was put together by Palorifgrodbierzrt
@@ -18,7 +18,7 @@ finally the actual ADPCM data:
 -------|---------|--------|----------------------------------------------------
 Offset | Size    | Type   | Information
 -------|---------|--------|----------------------------------------------------
-0x0    | 2       | short  | Format tag (0x0020 for Ubisoft ADPCM)
+0x0    | 2       | short  | Format tag (0x2000 for Ubisoft ADPCM)
 0x2    | 2       | short  | Channel count
 0x4    | 4       | int    | Sample rate
 0x8    | 4       | int    | Byte rate, as if it were uncompressed 16-bit PCM
